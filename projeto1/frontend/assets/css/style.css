@@ -1,0 +1,16 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd, #212529);
+    padding: 70px 0;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+footer {
+    margin-top: 80px;
+}

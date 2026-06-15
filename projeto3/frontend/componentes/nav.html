@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+
+        <!-- Marca / Logo -->
+        <a class="navbar-brand fw-bold" href="/">
+            📚 Biblioteca Dev
+        </a>
+
+        <!-- Botão do menu no celular -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+            aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links do menu -->
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                <!-- Dropdown Produtos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownProdutos" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        📦 Produtos
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownProdutos">
+                        <li>
+                            <a class="dropdown-item" href="/produtos">
+                                📋 Produtos
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/produtonovo">
+                                ➕ Novo Produto
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Dropdown Usuários -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuarios" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        👤 Usuários
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownUsuarios">
+                        <li>
+                            <a class="dropdown-item" href="/usuarios">
+                                📋 Usuários
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/usuarios/novo">
+                                ➕ Novo Usuário
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Dropdown Clientes -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownClientes" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        🧑‍💼 Clientes
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownClientes">
+                        <li>
+                            <a class="dropdown-item" href="/clientes">
+                                📋 Clientes
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/clientesnovo">
+                                ➕ Novo Cliente
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

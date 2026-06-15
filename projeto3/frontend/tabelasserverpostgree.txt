@@ -1,0 +1,253 @@
+Tenhos as páginas
+
+produtos.html :
+
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Sistema Biblioteca - Teste PostgreSQL</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+
+            <!-- Marca / Logo -->
+            <a class="navbar-brand fw-bold" href="/">
+                📚 Biblioteca Dev
+            </a>
+
+            <!-- Botão do menu no celular -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links do menu -->
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/produtos">
+                            📦 Produtos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usuarios">
+                            👤 Usuários
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clientes">
+                            🧑‍💼 Clientes
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <header class="bg-light border-bottom py-5">
+        <div class="container text-center">
+            <h1 class="display-6 fw-bold">PostgreSQL</h1>
+            <p class="lead">
+                Esta página verifica se o Node.js está conseguindo acessar o banco de dados.
+            </p>
+        </div>
+    </header>
+
+    <main class="container my-5">
+
+
+        <h2 class="mb-4">Lista de Produtos</h2>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th>Categoria</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaProdutos">
+                </tbody>
+            </table>
+        </div>
+
+
+        <script src="assets/js/scriptSelect.js"></script>
+
+
+
+
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        Sistema de Biblioteca com HTML, JavaScript, Node.js e PostgreSQL
+    </footer>
+
+    <script src="assets/js/teste-conexao.js"></script>
+</body>
+
+</html>
+
+
+tenho o script : /backend/server.js :
+
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
+
+const { pool } = require('./database/conexao');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const caminhoFrontend = path.join(__dirname, '..', 'frontend');
+
+app.use(express.static(caminhoFrontend));
+
+// rota para arquivo index.html
+app.get('/', (req, res) => {
+res.sendFile(path.join(caminhoFrontend, 'index.html'));
+});
+
+// rota para arquivo index.html
+// Rota Produtos
+app.get('/produtos', (req, res) => {
+res.sendFile(path.join(caminhoFrontend, 'produtos.html'));
+});
+
+// Rota Usuários
+app.get('/usuarios', (req, res) => {
+res.sendFile(path.join(caminhoFrontend, 'usuarios.html'));
+});
+
+// Rota Clientes
+app.get('/clientes', (req, res) => {
+res.sendFile(path.join(caminhoFrontend, 'clientes.html'));
+});
+
+
+// rota para arquivo index.html
+
+app.get('/teste', (req, res) => {
+res.json({
+mensagem: 'Rota teste funcionando!'
+});
+});
+
+app.get('/api/teste/conexao', async (req, res) => {
+try {
+const resultado = await pool.query(
+'SELECT NOW() AS data_atual, current_database() AS banco_atual'
+);
+
+return res.status(200).json({
+sucesso: true,
+mensagem: 'Conexão com PostgreSQL realizada com sucesso!',
+data: resultado.rows[0]
+});
+
+} catch (erro) {
+console.error('Erro ao conectar com PostgreSQL:', erro);
+
+return res.status(500).json({
+sucesso: false,
+mensagem: 'Erro ao conectar com PostgreSQL.',
+erro: erro.message
+});
+}
+});
+
+// consulta a tabela produtos
+
+app.get('/produtos', async (req, res) => {
+try {
+const resultado = await pool.query(`
+SELECT
+id,
+nome,
+preco,
+estoque,
+categoria
+FROM produtos
+ORDER BY id ASC
+`);
+
+return res.status(200).json(resultado.rows);
+
+} catch (erro) {
+console.error('Erro ao listar produtos:', erro);
+
+return res.status(500).json({
+sucesso: false,
+mensagem: 'Erro ao listar produtos.',
+erro: erro.message
+});
+}
+});
+
+app.use((req, res) => {
+res.status(404).json({
+sucesso: false,
+mensagem: 'Rota não encontrada.'
+});
+});
+
+app.listen(PORT, () => {
+console.log(`Servidor rodando na porta ${PORT}`);
+console.log(`Acesse: http://localhost:${PORT}`);
+});
+
+
+e o script scriptSelect.js :
+
+const tabelaProdutos = document.getElementById('tabelaProdutos');
+
+async function listarProdutos() {
+try {
+const resposta = await fetch('http://localhost:3000/produtos');
+const produtos = await resposta.json();
+
+tabelaProdutos.innerHTML = '';
+
+produtos.forEach((produto) => {
+tabelaProdutos.innerHTML += `
+<tr>
+    <td>${produto.id}</td>
+    <td>${produto.nome}</td>
+    <td>R$ ${Number(produto.preco).toFixed(2)}</td>
+    <td>${produto.estoque}</td>
+    <td>${produto.categoria}</td>
+</tr>
+`;
+});
+
+} catch (erro) {
+console.error('Erro ao listar produtos:', erro);
+}
+}
+
+listarProdutos();

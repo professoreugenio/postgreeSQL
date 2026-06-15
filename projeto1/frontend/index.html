@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-br" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Sistema Biblioteca - Teste PostgreSQL</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-book-half"></i>
+                Biblioteca DEV
+            </a>
+        </div>
+    </nav>
+
+    <header class="hero-section text-center text-white">
+        <div class="container">
+            <h1 class="display-5 fw-bold">Sistema de Biblioteca</h1>
+            <p class="lead">Teste de conexão entre HTML, JavaScript, Node.js e PostgreSQL</p>
+        </div>
+    </header>
+
+    <main class="container my-5">
+
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">
+                    <i class="bi bi-database-check"></i>
+                    Testar conexão com PostgreSQL
+                </h2>
+            </div>
+
+            <div class="card-body">
+                <p>
+                    Clique no botão abaixo para verificar se a API consegue acessar o banco de dados PostgreSQL.
+                </p>
+
+                <button id="btnTestarConexao" class="btn btn-success">
+                    <i class="bi bi-plug"></i>
+                    Testar Conexão
+                </button>
+
+                <div id="resultado" class="alert mt-4 d-none"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        Desenvolvido com HTML5, Bootstrap, JavaScript, Node.js e PostgreSQL
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
