@@ -64,12 +64,27 @@ app.get('/api/teste/conexao', async (req, res) => {
 });
 
 // Rota produtos
-app.get('/produtos', (req, res) => {
-    res.sendFile(path.join(caminhoFrontend, 'produtos.html'));
+app.get('/usuario/novo', (req, res) => {
+    res.sendFile(path.join(caminhoFrontend, 'usuarionovo.html'));
+});
+// Rota produtos
+app.get('/cliente/novo', (req, res) => {
+    res.sendFile(path.join(caminhoFrontend, 'clientenovo.html'));
 });
 
 
 
+// Rota para abrir a página de novo produto
+app.get('/produto/novo', (req, res) => {
+    res.sendFile(path.join(caminhoFrontend, 'produtonovo.html'));
+});
+
+
+
+// Rota produtos
+app.get('/produtos', (req, res) => {
+    res.sendFile(path.join(caminhoFrontend, 'produtos.html'));
+});
 // consulta a tabela produtos
 
 app.get('/api/produtos', async (req, res) => {
@@ -93,6 +108,74 @@ app.get('/api/produtos', async (req, res) => {
         return res.status(500).json({
             sucesso: false,
             mensagem: 'Erro ao listar produtos.',
+            erro: erro.message
+        });
+    }
+});
+
+
+// Cadastrar novo produto
+app.post('/api/produtos', async (req, res) => {
+    try {
+        const { nome, preco, estoque, categoria } = req.body;
+
+        // Validação básica
+        if (!nome || preco === undefined || estoque === undefined) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Nome, preço e estoque são obrigatórios.'
+            });
+        }
+
+        const nomeLimpo = nome.trim();
+        const categoriaLimpa = categoria ? categoria.trim() : null;
+        const precoNumerico = Number(preco);
+        const estoqueNumerico = Number(estoque);
+
+        if (nomeLimpo.length < 2) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'O nome do produto deve ter pelo menos 2 caracteres.'
+            });
+        }
+
+        if (isNaN(precoNumerico) || precoNumerico < 0) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Informe um preço válido.'
+            });
+        }
+
+        if (!Number.isInteger(estoqueNumerico) || estoqueNumerico < 0) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Informe um estoque válido.'
+            });
+        }
+
+        const resultado = await pool.query(
+            `
+            INSERT INTO produtos 
+                (nome, preco, estoque, categoria)
+            VALUES 
+                ($1, $2, $3, $4)
+            RETURNING id, nome, preco, estoque, categoria
+            `,
+            [nomeLimpo, precoNumerico, estoqueNumerico, categoriaLimpa]
+        );
+
+        return res.status(201).json({
+            sucesso: true,
+            mensagem: 'Produto cadastrado com sucesso!',
+            produto: resultado.rows[0]
+        });
+
+    } catch (erro) {
+        console.error('Erro ao cadastrar produto:', erro);
+
+        return res.status(500).json({
+            sucesso: false,
+            mensagem: 'Erro ao cadastrar produto.',
             erro: erro.message
         });
     }
