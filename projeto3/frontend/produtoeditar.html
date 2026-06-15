@@ -10,106 +10,101 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-    
-            <!-- Marca / Logo -->
-            <a class="navbar-brand fw-bold" href="/">
-                📚 Biblioteca Dev
-            </a>
-    
-            <!-- Botão do menu no celular -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
-                aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegação">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <!-- Links do menu -->
-            <div class="collapse navbar-collapse" id="menuPrincipal">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-    
-                    <!-- Dropdown Produtos -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdownProdutos" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            📦 Produtos
-                        </a>
-    
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownProdutos">
-                            <li>
-                                <a class="dropdown-item" href="/produtos">
-                                    📋 Produtos
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/produtos/novo">
-                                    ➕ Novo Produto
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-    
-                    <!-- Dropdown Usuários -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuarios" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            👤 Usuários
-                        </a>
-    
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownUsuarios">
-                            <li>
-                                <a class="dropdown-item" href="/usuarios">
-                                    📋 Usuários
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/usuarios/novo">
-                                    ➕ Novo Usuário
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-    
-                    <!-- Dropdown Clientes -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdownClientes" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            🧑‍💼 Clientes
-                        </a>
-    
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownClientes">
-                            <li>
-                                <a class="dropdown-item" href="/clientes">
-                                    📋 Clientes
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/clientes/novo">
-                                    ➕ Novo Cliente
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-    
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="areaNav"></div>
     <header class="bg-light border-bottom py-5">
         <div class="container text-center">
-            <h1 class="display-6 fw-bold">PostgreSQL</h1>
+            <h1 class="display-6 fw-bold">PostgreSQL Produtos Editar</h1>
             <p class="lead">
                 Esta página verifica se o Node.js está conseguindo acessar o banco de dados.
             </p>
         </div>
     </header>
     <main class="container my-5">
-        Conteúdo
+    
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+    
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-warning text-dark">
+                        <strong>✏️ Editar Produto</strong>
+                    </div>
+    
+                    <div class="card-body p-4">
+    
+                        <div id="mensagemProduto"></div>
+    
+                        <form id="formProdutoEditar">
+    
+                            <input type="hidden" id="idProduto">
+    
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">
+                                    Nome do Produto <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="nome" placeholder="Ex: Mouse USB" required>
+                            </div>
+    
+                            <div class="row">
+    
+                                <div class="col-md-6 mb-3">
+                                    <label for="preco" class="form-label">
+                                        Preço <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" class="form-control" id="preco" placeholder="Ex: 39.90" min="0"
+                                        step="0.01" required>
+                                </div>
+    
+                                <div class="col-md-6 mb-3">
+                                    <label for="estoque" class="form-label">
+                                        Estoque <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" class="form-control" id="estoque" placeholder="Ex: 10" min="0"
+                                        step="1" required>
+                                </div>
+    
+                            </div>
+    
+                            <div class="mb-3">
+                                <label for="categoria" class="form-label">
+                                    Categoria <span class="text-danger">*</span>
+                                </label>
+    
+                                <select class="form-select" id="categoria" required>
+                                    <option value="">Selecione uma categoria</option>
+                                    <option value="Computadores">Computadores</option>
+                                    <option value="Mouse">Mouse</option>
+                                    <option value="Memórias">Memórias</option>
+                                    <option value="Móveis">Móveis</option>
+                                    <option value="Monitores">Monitores</option>
+                                    <option value="Celulares">Celulares</option>
+                                </select>
+                            </div>
+    
+                            <div class="d-flex gap-2 justify-content-between mt-4">
+                                <a href="/produtos" class="btn btn-outline-secondary">
+                                    ← Voltar para Produtos
+                                </a>
+    
+                                <button type="submit" class="btn btn-warning">
+                                    Atualizar Produto
+                                </button>
+                            </div>
+    
+                        </form>
+    
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    
     </main>
     <footer class="bg-dark text-white text-center py-3">
         Sistema de Biblioteca com HTML, JavaScript, Node.js e PostgreSQL
     </footer>
-    <script src="assets/js/teste-conexao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/carregar-componentes.js"></script>
+    <script src="/assets/js/scriptProdutoEditar.js"></script>
 </body>
 
 </html>

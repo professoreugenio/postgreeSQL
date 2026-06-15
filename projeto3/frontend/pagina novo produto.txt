@@ -1,3 +1,7 @@
+estrutura páginas novo produto :
+
+1) Página produtnovo.html :
+
 <!doctype html>
 <html lang="pt-br">
 
@@ -13,7 +17,7 @@
     <div id="areaNav"></div>
     <header class="bg-light border-bottom py-5">
         <div class="container text-center">
-            <h1 class="display-6 fw-bold">PostgreSQL Usuários</h1>
+            <h1 class="display-6 fw-bold">PostgreSQL Produtos novo</h1>
             <p class="lead">
                 Esta página verifica se o Node.js está conseguindo acessar o banco de dados.
             </p>
@@ -27,6 +31,13 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/carregar-componentes.js"></script>
+    <script src="assets/js/scriptProdutoNovo.js"></script>
+    
 </body>
 
 </html>
+
+
+
+Tabela :
+produtos (nome, preco, estoque, categoria)
