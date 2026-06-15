@@ -181,6 +181,128 @@ app.post('/api/produtos', async (req, res) => {
     }
 });
 
+
+// Buscar um produto pelo ID
+app.get('/api/produtos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const resultado = await pool.query(
+            `
+            SELECT 
+                id,
+                nome,
+                preco,
+                estoque,
+                categoria
+            FROM produtos
+            WHERE id = $1
+            `,
+            [id]
+        );
+
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({
+                sucesso: false,
+                mensagem: 'Produto não encontrado.'
+            });
+        }
+
+        return res.status(200).json({
+            sucesso: true,
+            produto: resultado.rows[0]
+        });
+
+    } catch (erro) {
+        console.error('Erro ao buscar produto:', erro);
+
+        return res.status(500).json({
+            sucesso: false,
+            mensagem: 'Erro ao buscar produto.',
+            erro: erro.message
+        });
+    }
+});
+
+
+// Atualizar produto pelo ID
+app.put('/api/produtos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, preco, estoque, categoria } = req.body;
+
+        if (!nome || preco === undefined || estoque === undefined || !categoria) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Nome, preço, estoque e categoria são obrigatórios.'
+            });
+        }
+
+        const nomeLimpo = nome.trim();
+        const categoriaLimpa = categoria.trim();
+        const precoNumerico = Number(preco);
+        const estoqueNumerico = Number(estoque);
+
+        if (nomeLimpo.length < 2) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'O nome do produto deve ter pelo menos 2 caracteres.'
+            });
+        }
+
+        if (isNaN(precoNumerico) || precoNumerico < 0) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Informe um preço válido.'
+            });
+        }
+
+        if (!Number.isInteger(estoqueNumerico) || estoqueNumerico < 0) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Informe um estoque válido.'
+            });
+        }
+
+        const resultado = await pool.query(
+            `
+            UPDATE produtos
+            SET 
+                nome = $1,
+                preco = $2,
+                estoque = $3,
+                categoria = $4
+            WHERE id = $5
+            RETURNING id, nome, preco, estoque, categoria
+            `,
+            [nomeLimpo, precoNumerico, estoqueNumerico, categoriaLimpa, id]
+        );
+
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({
+                sucesso: false,
+                mensagem: 'Produto não encontrado para atualização.'
+            });
+        }
+
+        return res.status(200).json({
+            sucesso: true,
+            mensagem: 'Produto atualizado com sucesso!',
+            produto: resultado.rows[0]
+        });
+
+    } catch (erro) {
+        console.error('Erro ao atualizar produto:', erro);
+
+        return res.status(500).json({
+            sucesso: false,
+            mensagem: 'Erro ao atualizar produto.',
+            erro: erro.message
+        });
+    }
+});
+
+
 app.use((req, res) => {
     res.status(404).json({
         sucesso: false,
