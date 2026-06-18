@@ -85,6 +85,12 @@ app.get('/produto/novo', (req, res) => {
 app.get('/produtos', (req, res) => {
     res.sendFile(path.join(caminhoFrontend, 'produtos.html'));
 });
+
+// Rota produtos
+app.get('/produto/editar', (req, res) => {
+    res.sendFile(path.join(caminhoFrontend, 'produtoeditar.html'));
+});
+
 // consulta a tabela produtos
 
 app.get('/api/produtos', async (req, res) => {
@@ -181,6 +187,38 @@ app.post('/api/produtos', async (req, res) => {
     }
 });
 
+
+app.delete('/api/produtos/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const resultado = await pool.query(
+            'DELETE FROM produtos WHERE id = $1 RETURNING *',
+            [id]
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({
+                sucesso: false,
+                mensagem: 'Produto não encontrado.'
+            });
+        }
+
+        return res.status(200).json({
+            sucesso: true,
+            mensagem: 'Produto excluído com sucesso!'
+        });
+
+    } catch (erro) {
+        console.error('Erro ao excluir produto:', erro);
+
+        return res.status(500).json({
+            sucesso: false,
+            mensagem: 'Erro ao excluir produto.',
+            erro: erro.message
+        });
+    }
+});
 
 // Buscar um produto pelo ID
 app.get('/api/produtos/:id', async (req, res) => {
